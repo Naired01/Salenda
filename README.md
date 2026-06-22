@@ -1,4 +1,4 @@
-# OfficeRs - Sistema de Reserva de Salas de Conferencias
+# Salenda
 
 Sistema completo para la gestión y reserva de salas de conferencias con panel de administración y modo quiosco.
 
@@ -86,7 +86,3 @@ OfficeRs/
 │   └── package.json
 └── README.md
 ```
-
-## Licencia
-
-MIT
