@@ -150,7 +150,7 @@ export default function KioskPage() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-10">
           <h1 className="text-5xl font-extrabold mb-2 tracking-tight">
-            Office<span className="text-blue-400">Rs</span>
+            Salen<span className="text-blue-400">da</span>
           </h1>
           <p className="text-xl text-gray-400 font-light">Estado de Salas en Tiempo Real</p>
           <div className="flex items-center justify-center gap-2 mt-3 text-sm text-gray-500">
