@@ -69,7 +69,7 @@ export default function Drawer({ isOpen, onClose, title, children }: DrawerProps
           {title && <h2 className="text-xl font-semibold text-gray-900">{title}</h2>}
           <button
             onClick={onClose}
-            className="ml-auto rounded-md p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 focus:outline-none"
+            className="ml-auto rounded-md p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 focus:outline-none cursor-pointer"
           >
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

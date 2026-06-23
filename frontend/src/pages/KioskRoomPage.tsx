@@ -144,8 +144,11 @@ export default function KioskRoomPage() {
             room.is_occupied ? 'bg-red-900/40' : 'bg-green-900/40'
           }`}>
             <p className="text-xs font-medium opacity-60 uppercase tracking-wider mb-3">Reserva actual</p>
-            <p className="text-3xl font-bold mb-3">{room.current_reservation.title}</p>
-            <p className="text-xl opacity-90">
+            <p className="text-3xl font-bold mb-1">{room.current_reservation.title}</p>
+            {room.current_reservation.description && (
+              <p className="text-md opacity-60">{room.current_reservation.description}</p>
+            )}
+            <p className="text-xl opacity-90 mt-3">
               <ClockIcon />
               {format(new Date(room.current_reservation.start_time), 'HH:mm', { locale: es })} — {' '}
               {format(new Date(room.current_reservation.end_time), 'HH:mm', { locale: es })}
@@ -164,6 +167,9 @@ export default function KioskRoomPage() {
           }`}>
             <p className="text-xs font-medium opacity-60 uppercase tracking-wider mb-3">Próxima reserva</p>
             <p className="text-3xl font-bold mb-3">{room.next_reservation.title}</p>
+            <p className="text-xs opacity-60">
+              {room.next_reservation.description || 'Sin descripción'}
+            </p>
             <p className="text-xl opacity-90">
               <ClockIcon />
               {format(new Date(room.next_reservation.start_time), 'HH:mm', { locale: es })}

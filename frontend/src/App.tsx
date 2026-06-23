@@ -13,6 +13,7 @@ import NewReservation from './pages/NewReservation';
 import AdminRoomsPage from './pages/AdminRoomsPage';
 import KioskPage from './pages/KioskPage';
 import KioskRoomPage from './pages/KioskRoomPage';
+import Toast from './components/common/Toast';
 
 function App() {
   const { loadUser, isAuthenticated } = useAuthStore();
@@ -24,6 +25,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen bg-gray-50">
+        <Toast />
         <Routes>
           <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
           <Route path="/register" element={isAuthenticated ? <Navigate to="/" /> : <Register />} />

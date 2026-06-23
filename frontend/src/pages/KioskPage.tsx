@@ -5,6 +5,7 @@ import type { RoomStatus } from '../types';
 import Loading from '../components/common/Loading';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { useToastStore } from '../store/toastStore';
 
 function StatusDot({ occupied }: { occupied: boolean }) {
   return (
@@ -56,61 +57,65 @@ function LinkIcon() {
 
 function RoomCard({ room, onClick }: { room: RoomStatus; onClick: () => void }) {
   const kioskUrl = `${window.location.origin}/kiosk/${room.uuid}`;
+  const addToast = useToastStore((s) => s.addToast);
 
   return (
     <div
-      onClick={onClick}
       className={`rounded-2xl p-6 shadow-xl cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl border border-white/10 ${
         room.is_occupied
           ? 'bg-gradient-to-br from-red-600/90 to-red-800/90'
           : 'bg-gradient-to-br from-green-600/90 to-green-800/90'
       }`}
     >
-      <div className="flex justify-between items-start mb-4">
-        <h2 className="text-2xl font-bold">{room.name}</h2>
-        <div className="text-right">
-          <StatusDot occupied={room.is_occupied} />
+      <div onClick={onClick}>
+        <div className="flex justify-between items-start mb-4">
+          <h2 className="text-2xl font-bold">{room.name}</h2>
+          <div className="text-right">
+            <StatusDot occupied={room.is_occupied} />
+          </div>
         </div>
-      </div>
 
-      <div className="space-y-2 text-sm opacity-90">
-        <p>
-          <UsersIcon />
-          {room.capacity} personas
-        </p>
-        {room.location && (
+        <div className="space-y-2 text-sm opacity-90">
           <p>
-            <LocationIcon />
-            {room.location}
+            <UsersIcon />
+            {room.capacity} personas
           </p>
+          {room.location && (
+            <p>
+              <LocationIcon />
+              {room.location}
+            </p>
+          )}
+        </div>
+
+        {room.current_reservation && (
+          <div className="mt-4 pt-4 border-t border-white/20">
+            <p className="text-xs font-medium opacity-70 uppercase tracking-wider">Reserva actual</p>
+            <p className="font-semibold mt-1 text-lg">{room.current_reservation.title}</p>
+            <p className="text-sm opacity-90 mt-1">
+              <ClockIcon />
+              {format(new Date(room.current_reservation.start_time), 'HH:mm', { locale: es })} — {' '}
+              {format(new Date(room.current_reservation.end_time), 'HH:mm', { locale: es })}
+            </p>
+          </div>
+        )}
+
+        {room.next_reservation && !room.current_reservation && (
+          <div className="mt-4 pt-4 border-t border-white/20">
+            <p className="text-xs font-medium opacity-70 uppercase tracking-wider">Próxima reserva</p>
+            <p className="font-semibold mt-1 text-lg">{room.next_reservation.title}</p>
+            <p className="text-sm opacity-90 mt-1">
+              <ClockIcon />
+              {format(new Date(room.next_reservation.start_time), 'HH:mm', { locale: es })}
+            </p>
+          </div>
         )}
       </div>
 
-      {room.current_reservation && (
-        <div className="mt-4 pt-4 border-t border-white/20">
-          <p className="text-xs font-medium opacity-70 uppercase tracking-wider">Reserva actual</p>
-          <p className="font-semibold mt-1 text-lg">{room.current_reservation.title}</p>
-          <p className="text-sm opacity-90 mt-1">
-            <ClockIcon />
-            {format(new Date(room.current_reservation.start_time), 'HH:mm', { locale: es })} — {' '}
-            {format(new Date(room.current_reservation.end_time), 'HH:mm', { locale: es })}
-          </p>
-        </div>
-      )}
-
-      {room.next_reservation && !room.current_reservation && (
-        <div className="mt-4 pt-4 border-t border-white/20">
-          <p className="text-xs font-medium opacity-70 uppercase tracking-wider">Próxima reserva</p>
-          <p className="font-semibold mt-1 text-lg">{room.next_reservation.title}</p>
-          <p className="text-sm opacity-90 mt-1">
-            <ClockIcon />
-            {format(new Date(room.next_reservation.start_time), 'HH:mm', { locale: es })}
-          </p>
-        </div>
-      )}
-
-      <div className="mt-4 pt-3 border-t border-white/10">
-        <p className="text-xs opacity-50 truncate" title={kioskUrl}>
+      <div
+        onClick={() => {navigator.clipboard.writeText(kioskUrl); addToast("success", "URL copiada al portapapeles")}}
+        className="mt-4 pt-3 border-t border-white/10">
+        <p className="text-xs opacity-50 truncate hover:bg-white/5 transition-colors rounded-lg p-2" title={kioskUrl}>
           <LinkIcon />
           {kioskUrl}
         </p>
